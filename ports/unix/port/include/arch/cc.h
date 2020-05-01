@@ -66,11 +66,15 @@
 /* prototypes for printf() and abort() */
 #include <stdio.h>
 #include <stdlib.h>
+#include "arch/perf.h"
 /* Plaform specific diagnostic output */
-#define LWIP_PLATFORM_DIAG(x)	do {printf x;} while(0)
+//#define LWIP_PLATFORM_DIAG(x)	do { printf x; } while(0)
 
-#define LWIP_PLATFORM_ASSERT(x) do {printf("Assertion \"%s\" failed at line %d in %s\n", \
-                                     x, __LINE__, __FILE__); fflush(NULL); abort();} while(0)
+#define LWIP_PLATFORM_DIAG(x)	do { lwip_log x; } while(0)
+
+//#define LWIP_PLATFORM_ASSERT(x) do {printf("Assertion \"%s\" failed at line %d in %s\n", \
+//                                     x, __LINE__, __FILE__); fflush(NULL); abort();} while(0)
+#define LWIP_PLATFORM_ASSERT(x) do { lwip_assert("Assertion \"%s\" failed at line %d in %s", x, __LINE__, __FILE__); } while(0)
 
 #ifdef LWIP_NOASSERT_ON_ERROR
 #define LWIP_ERROR(message, expression, handler) do { if (!(expression)) { \

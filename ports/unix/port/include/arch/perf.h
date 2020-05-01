@@ -34,7 +34,7 @@
 
 #include <sys/times.h>
 
-#ifdef PERF
+#if LWIP_PERF
 #define PERF_START  { \
                          unsigned long __c1l, __c1h, __c2l, __c2h; \
                          __asm__(".byte 0x0f, 0x31" : "=a" (__c1l), "=d" (__c1h))
@@ -51,6 +51,12 @@
 #define PERF_START    /* null definition */
 #define PERF_STOP(x)  /* null definition */
 #endif /* PERF */
+
+void lwip_log_external(char *msg);
+void lwip_assert_external(char *msg);
+
+void lwip_log(const char * format, ...);
+void lwip_assert(const char * format, ...);
 
 void perf_print(unsigned long c1l, unsigned long c1h,
 		unsigned long c2l, unsigned long c2h,
